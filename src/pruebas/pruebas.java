@@ -32,19 +32,19 @@ public class pruebas {
         EntityManager em = emf.createEntityManager();
         
         em.getTransaction().begin();
-//        em.persist(empleado1);
-//        em.persist(empleado2);
+        em.persist(empleado1);
+        em.persist(empleado2);
         
         em.getTransaction().commit();
         // Lista de videojuegos cuyo desarrolladora es nintendo 
-        String jpql = "SELECT a FROM Empleado a";        
-        Query query = em.createQuery(jpql);        
-        System.out.println(query);
-        List<Empleado> resultado = query.getResultList();
-        for (Empleado empleado : resultado) {
-            System.out.println(empleado.getNombre());
-        }
-        
+//        String jpql = "SELECT a FROM Empleado a";        
+//        Query query = em.createQuery(jpql);        
+//        System.out.println(query);
+//        List<Empleado> resultado = query.getResultList();
+//        for (Empleado empleado : resultado) {
+//            System.out.println(empleado.getNombre());
+//        }
+//        
         
         
         
