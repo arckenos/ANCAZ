@@ -71,7 +71,7 @@ public class vistaArticulos extends javax.swing.JFrame {
         articulo.setNombre(this.txtNombre.getText());
         articulo.setUnidades(Integer.parseInt(this.txtUnidades.getText()));
         articulo.setPrecio(Integer.parseInt(this.txtPrecio.getText()));
-        articulo.setIdProveedor(Integer.parseInt(new Proveedores(this.txtProveedor.getText())));
+        articulo.setIdProveedor(new Proveedores(Integer.parseInt(this.txtProveedor.getText())));
         articulo.setDescripcion(this.txtDescripcion.getText()); 
         
     }
