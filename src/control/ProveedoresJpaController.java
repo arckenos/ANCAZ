@@ -20,6 +20,7 @@ import entidades.Proveedores;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 
 /**
  *
@@ -27,8 +28,8 @@ import javax.persistence.EntityManagerFactory;
  */
 public class ProveedoresJpaController implements Serializable {
 
-    public ProveedoresJpaController(EntityManagerFactory emf) {
-        this.emf = emf;
+    public ProveedoresJpaController() {
+        this.emf = Persistence.createEntityManagerFactory("InventariosANCAZPU");
     }
     private EntityManagerFactory emf = null;
 
