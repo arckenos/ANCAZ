@@ -2,12 +2,12 @@
 <persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
   <persistence-unit name="InventariosANCAZPU" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-    <class>entidades.Ordenes</class>
     <class>entidades.Articulos</class>
-    <class>entidades.Proveedores</class>
     <class>entidades.Detalleorden</class>
+    <class>entidades.Proveedores</class>
+    <class>entidades.Ordenes</class>
     <class>entidades.Proyectos</class>
-    <class>entidades.Empleado</class>
+    <class>entidades.Empleados</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/ancaz?zeroDateTimeBehavior=convertToNull"/>
       <property name="javax.persistence.jdbc.user" value="root"/>

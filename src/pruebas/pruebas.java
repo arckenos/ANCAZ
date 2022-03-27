@@ -7,12 +7,21 @@ package pruebas;
 
 //import Entidades.*;
 //import controladores.*;
-import entidades.Empleado;
+import entidades.Articulos;
+import entidades.Detalleorden;
+import entidades.Empleados;
+import entidades.Ordenes;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
+import logica.Control;
 
 /**
  *
@@ -25,27 +34,27 @@ public class pruebas {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        Empleado empleado1 = new Empleado(1, "rafael", "carballo", "sistemas");
-        Empleado empleado2 = new Empleado(2, "andrea", "borboa", "administracion");
+        Ordenes orden = new Ordenes(5);
+        orden.setFecha(Timestamp.valueOf(LocalDateTime.now()));
+        orden.setIdEmpleado(Control.consultarEmpleadoNombre("rafael"));
+        orden.setIdProveedor(Control.consultarProveedordoNombre("CEMEX"));
+        orden.setIdProyecto(Control.consultarProyecto(1));
+        List<Detalleorden> lista = new ArrayList<>();
+        Articulos a = Control.consultarArticulo(1);
+        Detalleorden d = new Detalleorden();
+        System.out.println(a.getNombre());
         
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("InventariosANCAZPU");
-        EntityManager em = emf.createEntityManager();
+        d.setIdArticulo(a);
+        d.setIdOrden(orden);
+        d.setCantidad(10);
+        lista.add(d);
+        //rden.setDetalleordenCollection(lista);
         
-        em.getTransaction().begin();
-        em.persist(empleado1);
-        em.persist(empleado2);
-        
-        em.getTransaction().commit();
-        // Lista de videojuegos cuyo desarrolladora es nintendo 
-//        String jpql = "SELECT a FROM Empleado a";        
-//        Query query = em.createQuery(jpql);        
-//        System.out.println(query);
-//        List<Empleado> resultado = query.getResultList();
-//        for (Empleado empleado : resultado) {
-//            System.out.println(empleado.getNombre());
-//        }
-//        
-        
+        try {
+            Control.registrarOrden(orden, lista);
+        } catch (Exception ex) {
+            Logger.getLogger(pruebas.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
         
         

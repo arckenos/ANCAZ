@@ -30,14 +30,14 @@ import javax.xml.bind.annotation.XmlTransient;
 @Entity
 @Table(name = "articulos")
 @XmlRootElement
-//@NamedQueries({
-//    @NamedQuery(name = "Articulos.findAll", query = "SELECT a FROM Articulos a")
-//    , @NamedQuery(name = "Articulos.findByIdArticulo", query = "SELECT a FROM Articulos a WHERE a.idArticulo = :idArticulo")
-//    , @NamedQuery(name = "Articulos.findByClave", query = "SELECT a FROM Articulos a WHERE a.clave = :clave")
-//    , @NamedQuery(name = "Articulos.findByNombre", query = "SELECT a FROM Articulos a WHERE a.nombre = :nombre")
-//    , @NamedQuery(name = "Articulos.findByUnidades", query = "SELECT a FROM Articulos a WHERE a.unidades = :unidades")
-//    , @NamedQuery(name = "Articulos.findByPrecio", query = "SELECT a FROM Articulos a WHERE a.precio = :precio")
-//    , @NamedQuery(name = "Articulos.findByDescripcion", query = "SELECT a FROM Articulos a WHERE a.descripcion = :descripcion")})
+@NamedQueries({
+    @NamedQuery(name = "Articulos.findAll", query = "SELECT a FROM Articulos a")
+    , @NamedQuery(name = "Articulos.findByIdArticulo", query = "SELECT a FROM Articulos a WHERE a.idArticulo = :idArticulo")
+    , @NamedQuery(name = "Articulos.findByClave", query = "SELECT a FROM Articulos a WHERE a.clave = :clave")
+    , @NamedQuery(name = "Articulos.findByNombre", query = "SELECT a FROM Articulos a WHERE a.nombre = :nombre")
+    , @NamedQuery(name = "Articulos.findByUnidades", query = "SELECT a FROM Articulos a WHERE a.unidades = :unidades")
+    , @NamedQuery(name = "Articulos.findByPrecio", query = "SELECT a FROM Articulos a WHERE a.precio = :precio")
+    , @NamedQuery(name = "Articulos.findByDescripcion", query = "SELECT a FROM Articulos a WHERE a.descripcion = :descripcion")})
 public class Articulos implements Serializable {
 
     private static final long serialVersionUID = 1L;

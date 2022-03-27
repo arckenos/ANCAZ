@@ -19,6 +19,7 @@ public class Principal extends javax.swing.JFrame {
     }
     
     vistaArticulos vistaArticulo = new vistaArticulos();
+    vistaProveedores viProveedores = new vistaProveedores();
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -127,6 +128,11 @@ public class Principal extends javax.swing.JFrame {
 
         btnProveedores.setText("Administrar Proveedores");
         btnProveedores.setToolTipText("");
+        btnProveedores.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnProveedoresActionPerformed(evt);
+            }
+        });
 
         btnEntradasSalidas.setText("Administrar Entradas y Salidas");
 
@@ -238,6 +244,9 @@ public class Principal extends javax.swing.JFrame {
 
     private void btnOrdenesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOrdenesActionPerformed
         // TODO add your handling code here:
+        vistaOrdenes viOrdenes = new vistaOrdenes();
+        dispose();
+        viOrdenes.setVisible(true);
     }//GEN-LAST:event_btnOrdenesActionPerformed
 
     private void btnArticulosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnArticulosActionPerformed
@@ -249,6 +258,12 @@ public class Principal extends javax.swing.JFrame {
     private void jMenu2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu2MouseClicked
         dispose();
     }//GEN-LAST:event_jMenu2MouseClicked
+
+    private void btnProveedoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProveedoresActionPerformed
+        // TODO add your handling code here:
+        dispose();
+        viProveedores.setVisible(true);
+    }//GEN-LAST:event_btnProveedoresActionPerformed
 
     /**
      * @param args the command line arguments

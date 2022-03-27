@@ -28,13 +28,18 @@ import javax.xml.bind.annotation.XmlTransient;
 @Entity
 @Table(name = "empleados")
 @XmlRootElement
-//@NamedQueries({
-//    @NamedQuery(name = "Empleados.findAll", query = "SELECT e FROM Empleados e")
-//    , @NamedQuery(name = "Empleados.findByIdEmpleado", query = "SELECT e FROM Empleados e WHERE e.idEmpleado = :idEmpleado")
-//    , @NamedQuery(name = "Empleados.findByNombre", query = "SELECT e FROM Empleados e WHERE e.nombre = :nombre")
-//    , @NamedQuery(name = "Empleados.findByApellidos", query = "SELECT e FROM Empleados e WHERE e.apellidos = :apellidos")
-//    , @NamedQuery(name = "Empleados.findByPuesto", query = "SELECT e FROM Empleados e WHERE e.puesto = :puesto")})
-public class Empleado implements Serializable {
+@NamedQueries({
+    @NamedQuery(name = "Empleados.findAll", query = "SELECT e FROM Empleados e")
+    , @NamedQuery(name = "Empleados.findByIdEmpleado", query = "SELECT e FROM Empleados e WHERE e.idEmpleado = :idEmpleado")
+    , @NamedQuery(name = "Empleados.findByNombre", query = "SELECT e FROM Empleados e WHERE e.nombre = :nombre")
+    , @NamedQuery(name = "Empleados.findByApellidos", query = "SELECT e FROM Empleados e WHERE e.apellidos = :apellidos")
+    , @NamedQuery(name = "Empleados.findByPuesto", query = "SELECT e FROM Empleados e WHERE e.puesto = :puesto")})
+public class Empleados implements Serializable {
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEmpleado")
+    private Collection<Ordenes> ordenesCollection;
+    @OneToMany(mappedBy = "idEncargado")
+    private Collection<Proyectos> proyectosCollection;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -51,19 +56,15 @@ public class Empleado implements Serializable {
     @Basic(optional = false)
     @Column(name = "puesto")
     private String puesto;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEmpleado")
-    private Collection<Ordenes> ordenesCollection;
-    @OneToMany(mappedBy = "idEncargado")
-    private Collection<Proyectos> proyectosCollection;
 
-    public Empleado() {
+    public Empleados() {
     }
 
-    public Empleado(Integer idEmpleado) {
+    public Empleados(Integer idEmpleado) {
         this.idEmpleado = idEmpleado;
     }
 
-    public Empleado(Integer idEmpleado, String nombre, String apellidos, String puesto) {
+    public Empleados(Integer idEmpleado, String nombre, String apellidos, String puesto) {
         this.idEmpleado = idEmpleado;
         this.nombre = nombre;
         this.apellidos = apellidos;
@@ -102,6 +103,31 @@ public class Empleado implements Serializable {
         this.puesto = puesto;
     }
 
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (idEmpleado != null ? idEmpleado.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Empleados)) {
+            return false;
+        }
+        Empleados other = (Empleados) object;
+        if ((this.idEmpleado == null && other.idEmpleado != null) || (this.idEmpleado != null && !this.idEmpleado.equals(other.idEmpleado))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "entidades.Empleados[ idEmpleado=" + idEmpleado + " ]";
+    }
+
     @XmlTransient
     public Collection<Ordenes> getOrdenesCollection() {
         return ordenesCollection;
@@ -118,31 +144,6 @@ public class Empleado implements Serializable {
 
     public void setProyectosCollection(Collection<Proyectos> proyectosCollection) {
         this.proyectosCollection = proyectosCollection;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (idEmpleado != null ? idEmpleado.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Empleado)) {
-            return false;
-        }
-        Empleado other = (Empleado) object;
-        if ((this.idEmpleado == null && other.idEmpleado != null) || (this.idEmpleado != null && !this.idEmpleado.equals(other.idEmpleado))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "entidades.Empleados[ idEmpleado=" + idEmpleado + " ]";
     }
     
 }

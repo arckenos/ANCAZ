@@ -3,10 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package control;
+package persistencia;
 
-import control.exceptions.IllegalOrphanException;
-import control.exceptions.NonexistentEntityException;
 import entidades.Articulos;
 import java.io.Serializable;
 import javax.persistence.Query;
@@ -21,6 +19,8 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import persistencia.exceptions.IllegalOrphanException;
+import persistencia.exceptions.NonexistentEntityException;
 
 /**
  *
@@ -28,14 +28,9 @@ import javax.persistence.Persistence;
  */
 public class ArticulosJpaController implements Serializable {
 
-    public ArticulosJpaController(EntityManagerFactory emf) {
-        this.emf = emf;
-    }
-    
     public ArticulosJpaController() {
         this.emf = Persistence.createEntityManagerFactory("InventariosANCAZPU");
     }
-    
     private EntityManagerFactory emf = null;
 
     public EntityManager getEntityManager() {

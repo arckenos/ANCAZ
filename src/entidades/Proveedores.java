@@ -28,13 +28,13 @@ import javax.xml.bind.annotation.XmlTransient;
 @Entity
 @Table(name = "proveedores")
 @XmlRootElement
-//@NamedQueries({
-//    @NamedQuery(name = "Proveedores.findAll", query = "SELECT p FROM Proveedores p")
-//    , @NamedQuery(name = "Proveedores.findByIdProveedor", query = "SELECT p FROM Proveedores p WHERE p.idProveedor = :idProveedor")
-//   , @NamedQuery(name = "Proveedores.findByNif", query = "SELECT p FROM Proveedores p WHERE p.nif = :nif")
-//    , @NamedQuery(name = "Proveedores.findByNombre", query = "SELECT p FROM Proveedores p WHERE p.nombre = :nombre")
-//    , @NamedQuery(name = "Proveedores.findByDirerccion", query = "SELECT p FROM Proveedores p WHERE p.direrccion = :direrccion")
-//    , @NamedQuery(name = "Proveedores.findByTelefono", query = "SELECT p FROM Proveedores p WHERE p.telefono = :telefono")})
+@NamedQueries({
+    @NamedQuery(name = "Proveedores.findAll", query = "SELECT p FROM Proveedores p")
+    , @NamedQuery(name = "Proveedores.findByIdProveedor", query = "SELECT p FROM Proveedores p WHERE p.idProveedor = :idProveedor")
+    , @NamedQuery(name = "Proveedores.findByNif", query = "SELECT p FROM Proveedores p WHERE p.nif = :nif")
+    , @NamedQuery(name = "Proveedores.findByNombre", query = "SELECT p FROM Proveedores p WHERE p.nombre = :nombre")
+    , @NamedQuery(name = "Proveedores.findByDirerccion", query = "SELECT p FROM Proveedores p WHERE p.direrccion = :direrccion")
+    , @NamedQuery(name = "Proveedores.findByTelefono", query = "SELECT p FROM Proveedores p WHERE p.telefono = :telefono")})
 public class Proveedores implements Serializable {
 
     private static final long serialVersionUID = 1L;

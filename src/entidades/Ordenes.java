@@ -7,6 +7,7 @@ package entidades;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -20,6 +21,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -30,10 +33,15 @@ import javax.xml.bind.annotation.XmlTransient;
 @Entity
 @Table(name = "ordenes")
 @XmlRootElement
-//@NamedQueries({
-//    @NamedQuery(name = "Ordenes.findAll", query = "SELECT o FROM Ordenes o")
-//    , @NamedQuery(name = "Ordenes.findByIdOrden", query = "SELECT o FROM Ordenes o WHERE o.idOrden = :idOrden")})
+@NamedQueries({
+    @NamedQuery(name = "Ordenes.findAll", query = "SELECT o FROM Ordenes o")
+    , @NamedQuery(name = "Ordenes.findByIdOrden", query = "SELECT o FROM Ordenes o WHERE o.idOrden = :idOrden")
+    , @NamedQuery(name = "Ordenes.findByFecha", query = "SELECT o FROM Ordenes o WHERE o.fecha = :fecha")
+    , @NamedQuery(name = "Ordenes.findByTotal", query = "SELECT o FROM Ordenes o WHERE o.total = :total")})
 public class Ordenes implements Serializable {
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idOrden")
+    private Collection<Detalleorden> detalleordenCollection;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -41,20 +49,34 @@ public class Ordenes implements Serializable {
     @Basic(optional = false)
     @Column(name = "idOrden")
     private Integer idOrden;
+    @Basic(optional = false)
+    @Column(name = "fecha")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fecha;
+    @Basic(optional = false)
+    @Column(name = "total")
+    private float total;
     @JoinColumn(name = "idEmpleado", referencedColumnName = "idEmpleado")
     @ManyToOne(optional = false)
-    private Empleado idEmpleado;
+    private Empleados idEmpleado;
     @JoinColumn(name = "idProveedor", referencedColumnName = "idProveedor")
     @ManyToOne(optional = false)
     private Proveedores idProveedor;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idOrden")
-    private Collection<Detalleorden> detalleordenCollection;
+    @JoinColumn(name = "idProyecto", referencedColumnName = "idProyecto")
+    @ManyToOne(optional = false)
+    private Proyectos idProyecto;
 
     public Ordenes() {
     }
 
     public Ordenes(Integer idOrden) {
         this.idOrden = idOrden;
+    }
+
+    public Ordenes(Integer idOrden, Date fecha, float total) {
+        this.idOrden = idOrden;
+        this.fecha = fecha;
+        this.total = total;
     }
 
     public Integer getIdOrden() {
@@ -65,11 +87,27 @@ public class Ordenes implements Serializable {
         this.idOrden = idOrden;
     }
 
-    public Empleado getIdEmpleado() {
+    public Date getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
+    }
+
+    public float getTotal() {
+        return total;
+    }
+
+    public void setTotal(float total) {
+        this.total = total;
+    }
+
+    public Empleados getIdEmpleado() {
         return idEmpleado;
     }
 
-    public void setIdEmpleado(Empleado idEmpleado) {
+    public void setIdEmpleado(Empleados idEmpleado) {
         this.idEmpleado = idEmpleado;
     }
 
@@ -81,13 +119,12 @@ public class Ordenes implements Serializable {
         this.idProveedor = idProveedor;
     }
 
-    @XmlTransient
-    public Collection<Detalleorden> getDetalleordenCollection() {
-        return detalleordenCollection;
+    public Proyectos getIdProyecto() {
+        return idProyecto;
     }
 
-    public void setDetalleordenCollection(Collection<Detalleorden> detalleordenCollection) {
-        this.detalleordenCollection = detalleordenCollection;
+    public void setIdProyecto(Proyectos idProyecto) {
+        this.idProyecto = idProyecto;
     }
 
     @Override
@@ -113,6 +150,15 @@ public class Ordenes implements Serializable {
     @Override
     public String toString() {
         return "entidades.Ordenes[ idOrden=" + idOrden + " ]";
+    }
+
+    @XmlTransient
+    public Collection<Detalleorden> getDetalleordenCollection() {
+        return detalleordenCollection;
+    }
+
+    public void setDetalleordenCollection(Collection<Detalleorden> detalleordenCollection) {
+        this.detalleordenCollection = detalleordenCollection;
     }
     
 }

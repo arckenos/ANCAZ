@@ -3,10 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package control;
+package persistencia;
 
-import control.exceptions.NonexistentEntityException;
-import control.exceptions.PreexistingEntityException;
 import java.io.Serializable;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
@@ -18,6 +16,8 @@ import entidades.Ordenes;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import persistencia.exceptions.NonexistentEntityException;
 
 /**
  *
@@ -25,8 +25,8 @@ import javax.persistence.EntityManagerFactory;
  */
 public class DetalleordenJpaController implements Serializable {
 
-    public DetalleordenJpaController(EntityManagerFactory emf) {
-        this.emf = emf;
+    public DetalleordenJpaController() {
+        this.emf = Persistence.createEntityManagerFactory("InventariosANCAZPU");
     }
     private EntityManagerFactory emf = null;
 
@@ -34,7 +34,7 @@ public class DetalleordenJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(Detalleorden detalleorden) throws PreexistingEntityException, Exception {
+    public void create(Detalleorden detalleorden) {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -59,11 +59,6 @@ public class DetalleordenJpaController implements Serializable {
                 idOrden = em.merge(idOrden);
             }
             em.getTransaction().commit();
-        } catch (Exception ex) {
-            if (findDetalleorden(detalleorden.getIdDetalleOrden()) != null) {
-                throw new PreexistingEntityException("Detalleorden " + detalleorden + " already exists.", ex);
-            }
-            throw ex;
         } finally {
             if (em != null) {
                 em.close();

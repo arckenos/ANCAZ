@@ -3,11 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package control;
+package persistencia;
 
-import control.exceptions.IllegalOrphanException;
-import control.exceptions.NonexistentEntityException;
-import entidades.Empleado;
+import entidades.Empleados;
 import java.io.Serializable;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
@@ -20,15 +18,18 @@ import entidades.Proyectos;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import persistencia.exceptions.IllegalOrphanException;
+import persistencia.exceptions.NonexistentEntityException;
 
 /**
  *
  * @author Arcke
  */
-public class EmpleadoJpaController implements Serializable {
+public class EmpleadosJpaController implements Serializable {
 
-    public EmpleadoJpaController(EntityManagerFactory emf) {
-        this.emf = emf;
+    public EmpleadosJpaController() {
+        this.emf = Persistence.createEntityManagerFactory("InventariosANCAZPU");
     }
     private EntityManagerFactory emf = null;
 
@@ -36,42 +37,42 @@ public class EmpleadoJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(Empleado empleado) {
-        if (empleado.getOrdenesCollection() == null) {
-            empleado.setOrdenesCollection(new ArrayList<Ordenes>());
+    public void create(Empleados empleados) {
+        if (empleados.getOrdenesCollection() == null) {
+            empleados.setOrdenesCollection(new ArrayList<Ordenes>());
         }
-        if (empleado.getProyectosCollection() == null) {
-            empleado.setProyectosCollection(new ArrayList<Proyectos>());
+        if (empleados.getProyectosCollection() == null) {
+            empleados.setProyectosCollection(new ArrayList<Proyectos>());
         }
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
             Collection<Ordenes> attachedOrdenesCollection = new ArrayList<Ordenes>();
-            for (Ordenes ordenesCollectionOrdenesToAttach : empleado.getOrdenesCollection()) {
+            for (Ordenes ordenesCollectionOrdenesToAttach : empleados.getOrdenesCollection()) {
                 ordenesCollectionOrdenesToAttach = em.getReference(ordenesCollectionOrdenesToAttach.getClass(), ordenesCollectionOrdenesToAttach.getIdOrden());
                 attachedOrdenesCollection.add(ordenesCollectionOrdenesToAttach);
             }
-            empleado.setOrdenesCollection(attachedOrdenesCollection);
+            empleados.setOrdenesCollection(attachedOrdenesCollection);
             Collection<Proyectos> attachedProyectosCollection = new ArrayList<Proyectos>();
-            for (Proyectos proyectosCollectionProyectosToAttach : empleado.getProyectosCollection()) {
+            for (Proyectos proyectosCollectionProyectosToAttach : empleados.getProyectosCollection()) {
                 proyectosCollectionProyectosToAttach = em.getReference(proyectosCollectionProyectosToAttach.getClass(), proyectosCollectionProyectosToAttach.getIdProyecto());
                 attachedProyectosCollection.add(proyectosCollectionProyectosToAttach);
             }
-            empleado.setProyectosCollection(attachedProyectosCollection);
-            em.persist(empleado);
-            for (Ordenes ordenesCollectionOrdenes : empleado.getOrdenesCollection()) {
-                Empleado oldIdEmpleadoOfOrdenesCollectionOrdenes = ordenesCollectionOrdenes.getIdEmpleado();
-                ordenesCollectionOrdenes.setIdEmpleado(empleado);
+            empleados.setProyectosCollection(attachedProyectosCollection);
+            em.persist(empleados);
+            for (Ordenes ordenesCollectionOrdenes : empleados.getOrdenesCollection()) {
+                Empleados oldIdEmpleadoOfOrdenesCollectionOrdenes = ordenesCollectionOrdenes.getIdEmpleado();
+                ordenesCollectionOrdenes.setIdEmpleado(empleados);
                 ordenesCollectionOrdenes = em.merge(ordenesCollectionOrdenes);
                 if (oldIdEmpleadoOfOrdenesCollectionOrdenes != null) {
                     oldIdEmpleadoOfOrdenesCollectionOrdenes.getOrdenesCollection().remove(ordenesCollectionOrdenes);
                     oldIdEmpleadoOfOrdenesCollectionOrdenes = em.merge(oldIdEmpleadoOfOrdenesCollectionOrdenes);
                 }
             }
-            for (Proyectos proyectosCollectionProyectos : empleado.getProyectosCollection()) {
-                Empleado oldIdEncargadoOfProyectosCollectionProyectos = proyectosCollectionProyectos.getIdEncargado();
-                proyectosCollectionProyectos.setIdEncargado(empleado);
+            for (Proyectos proyectosCollectionProyectos : empleados.getProyectosCollection()) {
+                Empleados oldIdEncargadoOfProyectosCollectionProyectos = proyectosCollectionProyectos.getIdEncargado();
+                proyectosCollectionProyectos.setIdEncargado(empleados);
                 proyectosCollectionProyectos = em.merge(proyectosCollectionProyectos);
                 if (oldIdEncargadoOfProyectosCollectionProyectos != null) {
                     oldIdEncargadoOfProyectosCollectionProyectos.getProyectosCollection().remove(proyectosCollectionProyectos);
@@ -86,16 +87,16 @@ public class EmpleadoJpaController implements Serializable {
         }
     }
 
-    public void edit(Empleado empleado) throws IllegalOrphanException, NonexistentEntityException, Exception {
+    public void edit(Empleados empleados) throws IllegalOrphanException, NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Empleado persistentEmpleado = em.find(Empleado.class, empleado.getIdEmpleado());
-            Collection<Ordenes> ordenesCollectionOld = persistentEmpleado.getOrdenesCollection();
-            Collection<Ordenes> ordenesCollectionNew = empleado.getOrdenesCollection();
-            Collection<Proyectos> proyectosCollectionOld = persistentEmpleado.getProyectosCollection();
-            Collection<Proyectos> proyectosCollectionNew = empleado.getProyectosCollection();
+            Empleados persistentEmpleados = em.find(Empleados.class, empleados.getIdEmpleado());
+            Collection<Ordenes> ordenesCollectionOld = persistentEmpleados.getOrdenesCollection();
+            Collection<Ordenes> ordenesCollectionNew = empleados.getOrdenesCollection();
+            Collection<Proyectos> proyectosCollectionOld = persistentEmpleados.getProyectosCollection();
+            Collection<Proyectos> proyectosCollectionNew = empleados.getProyectosCollection();
             List<String> illegalOrphanMessages = null;
             for (Ordenes ordenesCollectionOldOrdenes : ordenesCollectionOld) {
                 if (!ordenesCollectionNew.contains(ordenesCollectionOldOrdenes)) {
@@ -114,21 +115,21 @@ public class EmpleadoJpaController implements Serializable {
                 attachedOrdenesCollectionNew.add(ordenesCollectionNewOrdenesToAttach);
             }
             ordenesCollectionNew = attachedOrdenesCollectionNew;
-            empleado.setOrdenesCollection(ordenesCollectionNew);
+            empleados.setOrdenesCollection(ordenesCollectionNew);
             Collection<Proyectos> attachedProyectosCollectionNew = new ArrayList<Proyectos>();
             for (Proyectos proyectosCollectionNewProyectosToAttach : proyectosCollectionNew) {
                 proyectosCollectionNewProyectosToAttach = em.getReference(proyectosCollectionNewProyectosToAttach.getClass(), proyectosCollectionNewProyectosToAttach.getIdProyecto());
                 attachedProyectosCollectionNew.add(proyectosCollectionNewProyectosToAttach);
             }
             proyectosCollectionNew = attachedProyectosCollectionNew;
-            empleado.setProyectosCollection(proyectosCollectionNew);
-            empleado = em.merge(empleado);
+            empleados.setProyectosCollection(proyectosCollectionNew);
+            empleados = em.merge(empleados);
             for (Ordenes ordenesCollectionNewOrdenes : ordenesCollectionNew) {
                 if (!ordenesCollectionOld.contains(ordenesCollectionNewOrdenes)) {
-                    Empleado oldIdEmpleadoOfOrdenesCollectionNewOrdenes = ordenesCollectionNewOrdenes.getIdEmpleado();
-                    ordenesCollectionNewOrdenes.setIdEmpleado(empleado);
+                    Empleados oldIdEmpleadoOfOrdenesCollectionNewOrdenes = ordenesCollectionNewOrdenes.getIdEmpleado();
+                    ordenesCollectionNewOrdenes.setIdEmpleado(empleados);
                     ordenesCollectionNewOrdenes = em.merge(ordenesCollectionNewOrdenes);
-                    if (oldIdEmpleadoOfOrdenesCollectionNewOrdenes != null && !oldIdEmpleadoOfOrdenesCollectionNewOrdenes.equals(empleado)) {
+                    if (oldIdEmpleadoOfOrdenesCollectionNewOrdenes != null && !oldIdEmpleadoOfOrdenesCollectionNewOrdenes.equals(empleados)) {
                         oldIdEmpleadoOfOrdenesCollectionNewOrdenes.getOrdenesCollection().remove(ordenesCollectionNewOrdenes);
                         oldIdEmpleadoOfOrdenesCollectionNewOrdenes = em.merge(oldIdEmpleadoOfOrdenesCollectionNewOrdenes);
                     }
@@ -142,10 +143,10 @@ public class EmpleadoJpaController implements Serializable {
             }
             for (Proyectos proyectosCollectionNewProyectos : proyectosCollectionNew) {
                 if (!proyectosCollectionOld.contains(proyectosCollectionNewProyectos)) {
-                    Empleado oldIdEncargadoOfProyectosCollectionNewProyectos = proyectosCollectionNewProyectos.getIdEncargado();
-                    proyectosCollectionNewProyectos.setIdEncargado(empleado);
+                    Empleados oldIdEncargadoOfProyectosCollectionNewProyectos = proyectosCollectionNewProyectos.getIdEncargado();
+                    proyectosCollectionNewProyectos.setIdEncargado(empleados);
                     proyectosCollectionNewProyectos = em.merge(proyectosCollectionNewProyectos);
-                    if (oldIdEncargadoOfProyectosCollectionNewProyectos != null && !oldIdEncargadoOfProyectosCollectionNewProyectos.equals(empleado)) {
+                    if (oldIdEncargadoOfProyectosCollectionNewProyectos != null && !oldIdEncargadoOfProyectosCollectionNewProyectos.equals(empleados)) {
                         oldIdEncargadoOfProyectosCollectionNewProyectos.getProyectosCollection().remove(proyectosCollectionNewProyectos);
                         oldIdEncargadoOfProyectosCollectionNewProyectos = em.merge(oldIdEncargadoOfProyectosCollectionNewProyectos);
                     }
@@ -155,9 +156,9 @@ public class EmpleadoJpaController implements Serializable {
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                Integer id = empleado.getIdEmpleado();
-                if (findEmpleado(id) == null) {
-                    throw new NonexistentEntityException("The empleado with id " + id + " no longer exists.");
+                Integer id = empleados.getIdEmpleado();
+                if (findEmpleados(id) == null) {
+                    throw new NonexistentEntityException("The empleados with id " + id + " no longer exists.");
                 }
             }
             throw ex;
@@ -173,30 +174,30 @@ public class EmpleadoJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Empleado empleado;
+            Empleados empleados;
             try {
-                empleado = em.getReference(Empleado.class, id);
-                empleado.getIdEmpleado();
+                empleados = em.getReference(Empleados.class, id);
+                empleados.getIdEmpleado();
             } catch (EntityNotFoundException enfe) {
-                throw new NonexistentEntityException("The empleado with id " + id + " no longer exists.", enfe);
+                throw new NonexistentEntityException("The empleados with id " + id + " no longer exists.", enfe);
             }
             List<String> illegalOrphanMessages = null;
-            Collection<Ordenes> ordenesCollectionOrphanCheck = empleado.getOrdenesCollection();
+            Collection<Ordenes> ordenesCollectionOrphanCheck = empleados.getOrdenesCollection();
             for (Ordenes ordenesCollectionOrphanCheckOrdenes : ordenesCollectionOrphanCheck) {
                 if (illegalOrphanMessages == null) {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
-                illegalOrphanMessages.add("This Empleado (" + empleado + ") cannot be destroyed since the Ordenes " + ordenesCollectionOrphanCheckOrdenes + " in its ordenesCollection field has a non-nullable idEmpleado field.");
+                illegalOrphanMessages.add("This Empleados (" + empleados + ") cannot be destroyed since the Ordenes " + ordenesCollectionOrphanCheckOrdenes + " in its ordenesCollection field has a non-nullable idEmpleado field.");
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
-            Collection<Proyectos> proyectosCollection = empleado.getProyectosCollection();
+            Collection<Proyectos> proyectosCollection = empleados.getProyectosCollection();
             for (Proyectos proyectosCollectionProyectos : proyectosCollection) {
                 proyectosCollectionProyectos.setIdEncargado(null);
                 proyectosCollectionProyectos = em.merge(proyectosCollectionProyectos);
             }
-            em.remove(empleado);
+            em.remove(empleados);
             em.getTransaction().commit();
         } finally {
             if (em != null) {
@@ -205,19 +206,19 @@ public class EmpleadoJpaController implements Serializable {
         }
     }
 
-    public List<Empleado> findEmpleadoEntities() {
-        return findEmpleadoEntities(true, -1, -1);
+    public List<Empleados> findEmpleadosEntities() {
+        return findEmpleadosEntities(true, -1, -1);
     }
 
-    public List<Empleado> findEmpleadoEntities(int maxResults, int firstResult) {
-        return findEmpleadoEntities(false, maxResults, firstResult);
+    public List<Empleados> findEmpleadosEntities(int maxResults, int firstResult) {
+        return findEmpleadosEntities(false, maxResults, firstResult);
     }
 
-    private List<Empleado> findEmpleadoEntities(boolean all, int maxResults, int firstResult) {
+    private List<Empleados> findEmpleadosEntities(boolean all, int maxResults, int firstResult) {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            cq.select(cq.from(Empleado.class));
+            cq.select(cq.from(Empleados.class));
             Query q = em.createQuery(cq);
             if (!all) {
                 q.setMaxResults(maxResults);
@@ -229,20 +230,20 @@ public class EmpleadoJpaController implements Serializable {
         }
     }
 
-    public Empleado findEmpleado(Integer id) {
+    public Empleados findEmpleados(Integer id) {
         EntityManager em = getEntityManager();
         try {
-            return em.find(Empleado.class, id);
+            return em.find(Empleados.class, id);
         } finally {
             em.close();
         }
     }
 
-    public int getEmpleadoCount() {
+    public int getEmpleadosCount() {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            Root<Empleado> rt = cq.from(Empleado.class);
+            Root<Empleados> rt = cq.from(Empleados.class);
             cq.select(em.getCriteriaBuilder().count(rt));
             Query q = em.createQuery(cq);
             return ((Long) q.getSingleResult()).intValue();

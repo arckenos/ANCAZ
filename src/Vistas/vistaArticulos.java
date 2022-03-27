@@ -5,7 +5,7 @@
  */
 package Vistas;
 
-import control.ArticulosJpaController;
+import persistencia.ArticulosJpaController;
 import entidades.Articulos;
 import entidades.Proveedores;
 import java.util.List;

@@ -6,6 +6,7 @@
 package entidades;
 
 import java.io.Serializable;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,8 +17,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -26,11 +29,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Table(name = "proyectos")
 @XmlRootElement
-//@NamedQueries({
-//    @NamedQuery(name = "Proyectos.findAll", query = "SELECT p FROM Proyectos p")
-//    , @NamedQuery(name = "Proyectos.findByIdProyecto", query = "SELECT p FROM Proyectos p WHERE p.idProyecto = :idProyecto")
-//    , @NamedQuery(name = "Proyectos.findByClave", query = "SELECT p FROM Proyectos p WHERE p.clave = :clave")
-//   , @NamedQuery(name = "Proyectos.findByNombre", query = "SELECT p FROM Proyectos p WHERE p.nombre = :nombre")})
+@NamedQueries({
+    @NamedQuery(name = "Proyectos.findAll", query = "SELECT p FROM Proyectos p")
+    , @NamedQuery(name = "Proyectos.findByIdProyecto", query = "SELECT p FROM Proyectos p WHERE p.idProyecto = :idProyecto")
+    , @NamedQuery(name = "Proyectos.findByClave", query = "SELECT p FROM Proyectos p WHERE p.clave = :clave")
+    , @NamedQuery(name = "Proyectos.findByNombre", query = "SELECT p FROM Proyectos p WHERE p.nombre = :nombre")})
 public class Proyectos implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -45,9 +48,11 @@ public class Proyectos implements Serializable {
     @Basic(optional = false)
     @Column(name = "nombre")
     private String nombre;
+    @OneToMany(mappedBy = "idProyecto")
+    private Collection<Ordenes> ordenesCollection;
     @JoinColumn(name = "idEncargado", referencedColumnName = "idEmpleado")
     @ManyToOne
-    private Empleado idEncargado;
+    private Empleados idEncargado;
 
     public Proyectos() {
     }
@@ -86,11 +91,20 @@ public class Proyectos implements Serializable {
         this.nombre = nombre;
     }
 
-    public Empleado getIdEncargado() {
+    @XmlTransient
+    public Collection<Ordenes> getOrdenesCollection() {
+        return ordenesCollection;
+    }
+
+    public void setOrdenesCollection(Collection<Ordenes> ordenesCollection) {
+        this.ordenesCollection = ordenesCollection;
+    }
+
+    public Empleados getIdEncargado() {
         return idEncargado;
     }
 
-    public void setIdEncargado(Empleado idEncargado) {
+    public void setIdEncargado(Empleados idEncargado) {
         this.idEncargado = idEncargado;
     }
 
