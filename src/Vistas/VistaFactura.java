@@ -35,7 +35,7 @@ public class VistaFactura extends javax.swing.JFrame {
         this.orden = orden;
         iniciar();
         actualizarTabla();
-        
+        setLocationRelativeTo(null);
     }
     
     private void iniciar(){
@@ -211,7 +211,15 @@ public class VistaFactura extends javax.swing.JFrame {
             new String [] {
                 "Concepto", "Descripcion", "Unidades", "Precio", "Total"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(tblFactura);
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -350,6 +358,13 @@ public class VistaFactura extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
+        
+        
+        if(detalles.isEmpty()){
+            JOptionPane.showMessageDialog(this, "No se permite registar una orden vacia");
+            return;
+        }
+            
         try {
             // TODO add your handling code here:
             orden.setTotal(Float.parseFloat(lbTotal.getText()));
@@ -366,6 +381,9 @@ public class VistaFactura extends javax.swing.JFrame {
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         // TODO add your handling code here:
+        vistaOrdenes viOrdenes = new vistaOrdenes();
+        dispose();
+        viOrdenes.setVisible(true);
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed

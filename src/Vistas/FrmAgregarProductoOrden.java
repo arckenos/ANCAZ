@@ -26,6 +26,8 @@ public class FrmAgregarProductoOrden extends javax.swing.JFrame {
         this.proveedor = proveedor;
         txtProveedor.setText(this.proveedor.getNombre());
         txtClave.setColumns(5);
+        setLocationRelativeTo(null);
+
     }
 
     /**
@@ -56,6 +58,11 @@ public class FrmAgregarProductoOrden extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         txtNombre.setToolTipText("");
+        txtNombre.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtNombreKeyTyped(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(0, 102, 204));
 
@@ -215,7 +222,12 @@ public class FrmAgregarProductoOrden extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:        
+        // TODO add your handling code here:     
+        if(txtClave.getText().isEmpty() || txtNombre.getText().isEmpty() || txtPrecio.getText().isEmpty()){
+            JOptionPane.showMessageDialog(this, "El nombre, clave y precio son obligatorios");        
+            return;
+        }
+        
         Articulos articulos = new Articulos(
                 0,
                 txtClave.getText(),
@@ -242,6 +254,17 @@ public class FrmAgregarProductoOrden extends javax.swing.JFrame {
             evt.consume();            
         }
     }//GEN-LAST:event_txtClaveKeyTyped
+
+    private void txtNombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreKeyTyped
+        // TODO add your handling code here:
+        char validar = evt.getKeyChar();
+        if(Character.isAlphabetic(validar) || validar == ' ' || Character.isDigit(validar)){
+            
+        }else{
+            getToolkit().beep();
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtNombreKeyTyped
 
     /**
      * @param args the command line arguments

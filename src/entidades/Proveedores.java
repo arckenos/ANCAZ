@@ -53,6 +53,9 @@ public class Proveedores implements Serializable {
     private String direrccion;
     @Column(name = "telefono")
     private String telefono;
+    @Column(name = "correo")
+    private String correo;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idProveedor")
     private Collection<Ordenes> ordenesCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idProveedor")
@@ -109,6 +112,14 @@ public class Proveedores implements Serializable {
 
     public void setTelefono(String telefono) {
         this.telefono = telefono;
+    }           
+
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
+
+    public String getCorreo() {
+        return correo;
     }
 
     @XmlTransient

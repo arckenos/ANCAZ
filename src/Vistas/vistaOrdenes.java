@@ -31,6 +31,8 @@ public class vistaOrdenes extends javax.swing.JFrame {
         initComponents();
         ordenes = Control.consultarOrdenes();
         actualizarTabla();
+        setLocationRelativeTo(null);
+
     }
     
     public void actualizarTabla(){
@@ -43,9 +45,21 @@ public class vistaOrdenes extends javax.swing.JFrame {
             for(int i=0; i<ordenes.size(); i++){
                 Ordenes orden = this.ordenes.get(i);
                 obj[0]= orden.getIdOrden().toString();
-                obj[1]= orden.getIdEmpleado().getNombre();
-                obj[2]= orden.getIdProveedor().getNombre();
-                obj[3]= orden.getIdProyecto().getNombre();
+                if(orden.getIdEmpleado() != null ){
+                    obj[1]= orden.getIdEmpleado().getNombre();
+                }else{
+                    obj[1] = "N/A";
+                }
+                if(orden.getIdProveedor()!= null ){
+                    obj[2]= orden.getIdProveedor().getNombre();
+                }else{
+                    obj[2] = "N/A";
+                }
+                if(orden.getIdProyecto()!= null ){
+                    obj[3]= orden.getIdProyecto().getNombre();
+                }else{
+                    obj[3] = "N/A";
+                }
                 obj[4]= orden.getTotal();
                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MMM/yyyy");
                 String stringDate = dateFormat.format(orden.getFecha());
@@ -138,7 +152,15 @@ public class vistaOrdenes extends javax.swing.JFrame {
             new String [] {
                 "idOrden", "Empleado", "Proveedor", "Proyecto", "Total", "fecha"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(tblOrdenes);
 
         btnAgregar.setText("Agregar");

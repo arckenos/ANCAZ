@@ -25,6 +25,8 @@ public class vistaProveedores extends javax.swing.JFrame {
     public vistaProveedores() {
         initComponents();
         getTabla();
+        setLocationRelativeTo(null);
+
     }   
     
     public void limpiar(){

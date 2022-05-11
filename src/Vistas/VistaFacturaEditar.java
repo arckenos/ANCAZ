@@ -9,6 +9,7 @@ import entidades.Articulos;
 import entidades.Detalleorden;
 import entidades.Ordenes;
 import java.util.List;
+import javax.swing.JOptionPane;
 import logica.Control;
 
 /**
@@ -35,7 +36,7 @@ public class VistaFacturaEditar extends javax.swing.JFrame {
         this.index = index;
         this.vistaFactura = vistaFactura;
         iniciar();
-        
+        setLocationRelativeTo(null);
     }        
     
     
@@ -71,7 +72,7 @@ public class VistaFacturaEditar extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         lbAccion = new javax.swing.JLabel();
         btnAceptar = new javax.swing.JButton();
-        btnEliminar = new javax.swing.JButton();
+        btnCancelar = new javax.swing.JButton();
         comboArticulos = new javax.swing.JComboBox<>();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
@@ -111,7 +112,12 @@ public class VistaFacturaEditar extends javax.swing.JFrame {
             }
         });
 
-        btnEliminar.setText("Eliminar");
+        btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(0, 51, 153));
@@ -138,7 +144,7 @@ public class VistaFacturaEditar extends javax.swing.JFrame {
                         .addGap(63, 63, 63)
                         .addComponent(btnAceptar)
                         .addGap(27, 27, 27)
-                        .addComponent(btnEliminar))
+                        .addComponent(btnCancelar))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(120, 120, 120)
                         .addComponent(jLabel7))
@@ -164,7 +170,7 @@ public class VistaFacturaEditar extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAceptar)
-                    .addComponent(btnEliminar))
+                    .addComponent(btnCancelar))
                 .addGap(21, 21, 21))
         );
 
@@ -187,11 +193,18 @@ public class VistaFacturaEditar extends javax.swing.JFrame {
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
         // TODO add your handling code here:
         if(accion == AGREGAR){
-            Detalleorden detalleorden = new Detalleorden();
-            detalleorden.setIdOrden(orden);
-            detalleorden.setIdArticulo(Control.consultarArticulo(comboArticulos.getSelectedItem().toString()));
-            detalleorden.setCantidad((int) spinnerCantidad.getValue());
-            detalleFactura.add(detalleorden);
+            Detalleorden nuevoDetalleOrden = new Detalleorden();
+            nuevoDetalleOrden.setIdOrden(orden);
+            nuevoDetalleOrden.setIdArticulo(Control.consultarArticulo(comboArticulos.getSelectedItem().toString()));
+            nuevoDetalleOrden.setCantidad((int) spinnerCantidad.getValue());
+            for (Detalleorden detalleorden : detalleFactura) {
+                if (detalleorden.getIdArticulo().equals(nuevoDetalleOrden.getIdArticulo())){
+                    JOptionPane.showMessageDialog(this, "Este producto ya esta registado en la orden");
+                    return;
+                }
+                
+            }
+            detalleFactura.add(nuevoDetalleOrden);
         }
         if(accion == EDITAR){
              Detalleorden detalleorden = new Detalleorden();
@@ -204,6 +217,11 @@ public class VistaFacturaEditar extends javax.swing.JFrame {
         vistaFactura.actualizarTabla();
         
     }//GEN-LAST:event_btnAceptarActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        // TODO add your handling code here:
+        dispose();
+    }//GEN-LAST:event_btnCancelarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -243,7 +261,7 @@ public class VistaFacturaEditar extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAceptar;
-    private javax.swing.JButton btnEliminar;
+    private javax.swing.JButton btnCancelar;
     private javax.swing.JComboBox<String> comboArticulos;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;

@@ -33,6 +33,8 @@ public class FrmNuevaOrden extends javax.swing.JFrame {
     public FrmNuevaOrden() {
         initComponents();
         iniciarCombos();
+        setLocationRelativeTo(null);
+
     }
     
     public void iniciarCombos(){        
