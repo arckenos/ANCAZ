@@ -43,7 +43,8 @@ public class VistaFacturaEditar extends javax.swing.JFrame {
     public void iniciar(){
         List<Articulos> lista = Control.consultarArticulos();
         for (Articulos articulos : lista) {
-            comboArticulos.addItem(articulos.getNombre());
+            if(articulos.getIdProveedor().equals(orden.getIdProveedor()))               
+                comboArticulos.addItem(articulos.getNombre());
         }
         
         if(accion == EDITAR){
@@ -127,7 +128,7 @@ public class VistaFacturaEditar extends javax.swing.JFrame {
         jLabel8.setForeground(new java.awt.Color(0, 51, 153));
         jLabel8.setText("Cantidad");
 
-        spinnerCantidad.setModel(new javax.swing.SpinnerNumberModel(1, null, null, 1));
+        spinnerCantidad.setModel(new javax.swing.SpinnerNumberModel(1, 0, null, 1));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
