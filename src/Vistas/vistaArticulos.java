@@ -75,6 +75,7 @@ public class vistaArticulos extends javax.swing.JFrame {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error al cargar datos");
         }
+        
         tablaArticulos.setAutoResizeMode(tablaArticulos.AUTO_RESIZE_OFF);
         TableColumnModel columns = tablaArticulos.getColumnModel();
         columns.getColumn(0).setPreferredWidth(70);
@@ -88,8 +89,11 @@ public class vistaArticulos extends javax.swing.JFrame {
     
     //metodo para ingresar datos a la bd desde la vistaArticulos
     private void setiar(){
-        
-        articulo.setIdArticulo(Integer.parseInt(this.txtId.getText()));
+        if(!txtId.getText().isEmpty())
+            articulo.setIdArticulo(Integer.parseInt(this.txtId.getText()));
+        else{
+            articulo.setIdArticulo(0);
+        }
         articulo.setClave(this.txtClave.getText());
         articulo.setNombre(this.txtNombre.getText());
         articulo.setUnidades(Integer.parseInt(this.txtUnidades.getText()));
@@ -177,6 +181,8 @@ public class vistaArticulos extends javax.swing.JFrame {
         jLabel11.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel11.setForeground(new java.awt.Color(0, 51, 153));
         jLabel11.setText("Descripción");
+
+        txtId.setEditable(false);
 
         txtPrecio.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -446,6 +452,7 @@ public class vistaArticulos extends javax.swing.JFrame {
             setiar();
             Control.registrarArticulo(articulo);
             JOptionPane.showMessageDialog(this, "Agregado Correctamente!");
+            limpiar();
             getTabla();
         } catch (Exception e) {
           JOptionPane.showMessageDialog(this, "Error al agregar los datos... Intente nuevamente.");
@@ -458,6 +465,7 @@ public class vistaArticulos extends javax.swing.JFrame {
         try {
             setiar();
             ctrl.edit(articulo);
+            limpiar();
             getTabla();
             JOptionPane.showMessageDialog(this, "Articulo Actualizado Correctamente");
         } catch (Exception e) {
@@ -473,7 +481,7 @@ public class vistaArticulos extends javax.swing.JFrame {
             getTabla();
             JOptionPane.showMessageDialog(this, "Articulo Eliminado Correctamente");
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error al Eliminar");
+            JOptionPane.showMessageDialog(this, "Error al Eliminar"+e.getMessage());
         }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
@@ -485,20 +493,18 @@ public class vistaArticulos extends javax.swing.JFrame {
         this.txtNombre.setText(articulo.getNombre());
         this.txtUnidades.setText(articulo.getUnidades()+"");
         this.txtPrecio.setText(articulo.getPrecio()+"");
-        this.comboProveedores.setSelectedItem(articulo.getIdProveedor().getNombre());
-        
-        
-        /*
-        this.txtId.setText(this.tablaArticulos.getValueAt(this.tablaArticulos.getSelectedRow(), 0).toString());
-        this.txtClave.setText(this.tablaArticulos.getValueAt(this.tablaArticulos.getSelectedRow(), 1).toString());
-        this.txtNombre.setText(this.tablaArticulos.getValueAt(this.tablaArticulos.getSelectedRow(), 2).toString());
-        this.txtUnidades.setText(this.tablaArticulos.getValueAt(this.tablaArticulos.getSelectedRow(), 3).toString());
-        this.txtPrecio.setText(this.tablaArticulos.getValueAt(this.tablaArticulos.getSelectedRow(), 4).toString());
-        this.comboProveedores.setSelectedItem(evt);
-        */     
-        //this.txtDescripcion.setText(this.tablaArticulos.getValueAt(this.tablaArticulos.getSelectedRow(), 6).toString());
+        this.txtDescripcion.setText(articulo.getDescripcion());
+        this.comboProveedores.setSelectedItem(articulo.getIdProveedor().getNombre());     
     }//GEN-LAST:event_tablaArticulosMouseClicked
-
+    
+    public void limpiar(){
+        txtId.setText("");
+        txtClave.setText("");
+        txtNombre.setText("");
+        txtUnidades.setText("");
+        txtPrecio.setText("");        
+    }
+    
     private void jMenu2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu2MouseClicked
        dispose();
     }//GEN-LAST:event_jMenu2MouseClicked

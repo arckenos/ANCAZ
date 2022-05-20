@@ -31,7 +31,6 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Proveedores.findAll", query = "SELECT p FROM Proveedores p")
     , @NamedQuery(name = "Proveedores.findByIdProveedor", query = "SELECT p FROM Proveedores p WHERE p.idProveedor = :idProveedor")
-    , @NamedQuery(name = "Proveedores.findByNif", query = "SELECT p FROM Proveedores p WHERE p.nif = :nif")
     , @NamedQuery(name = "Proveedores.findByNombre", query = "SELECT p FROM Proveedores p WHERE p.nombre = :nombre")
     , @NamedQuery(name = "Proveedores.findByDirerccion", query = "SELECT p FROM Proveedores p WHERE p.direrccion = :direrccion")
     , @NamedQuery(name = "Proveedores.findByTelefono", query = "SELECT p FROM Proveedores p WHERE p.telefono = :telefono")})
@@ -43,9 +42,6 @@ public class Proveedores implements Serializable {
     @Basic(optional = false)
     @Column(name = "idProveedor")
     private Integer idProveedor;
-    @Basic(optional = false)
-    @Column(name = "NIF")
-    private String nif;
     @Basic(optional = false)
     @Column(name = "nombre")
     private String nombre;
@@ -68,9 +64,8 @@ public class Proveedores implements Serializable {
         this.idProveedor = idProveedor;
     }
 
-    public Proveedores(Integer idProveedor, String nif, String nombre) {
-        this.idProveedor = idProveedor;
-        this.nif = nif;
+    public Proveedores(Integer idProveedor, String nombre) {
+        this.idProveedor = idProveedor;        
         this.nombre = nombre;
     }
 
@@ -80,14 +75,6 @@ public class Proveedores implements Serializable {
 
     public void setIdProveedor(Integer idProveedor) {
         this.idProveedor = idProveedor;
-    }
-
-    public String getNif() {
-        return nif;
-    }
-
-    public void setNif(String nif) {
-        this.nif = nif;
     }
 
     public String getNombre() {

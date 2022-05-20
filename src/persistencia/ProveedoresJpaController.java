@@ -5,8 +5,6 @@
  */
 package persistencia;
 
-import Vistas.exceptions.IllegalOrphanException;
-import Vistas.exceptions.NonexistentEntityException;
 import java.io.Serializable;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
@@ -21,6 +19,8 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import persistencia.exceptions.IllegalOrphanException;
+import persistencia.exceptions.NonexistentEntityException;
 
 /**
  *
@@ -29,7 +29,8 @@ import javax.persistence.Persistence;
 public class ProveedoresJpaController implements Serializable {
 
     public ProveedoresJpaController() {
-        this.emf = Persistence.createEntityManagerFactory("InventariosANCAZPU");
+                this.emf = Persistence.createEntityManagerFactory("InventariosANCAZPU");
+
     }
     private EntityManagerFactory emf = null;
 

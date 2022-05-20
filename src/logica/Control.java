@@ -10,6 +10,8 @@ import control.exceptions.NonexistentEntityException;
 import entidades.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import persistencia.*;
 
 /**
@@ -51,6 +53,17 @@ public class Control {
             }
         }
         return detalles;
+    }
+    
+    public static void eliminarProveedor(Proveedores proveedor){
+        try {
+            ProveedoresJpaController pc = new ProveedoresJpaController();
+            pc.destroy(proveedor.getIdProveedor());
+        } catch (persistencia.exceptions.IllegalOrphanException ex) {
+            Logger.getLogger(Control.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (persistencia.exceptions.NonexistentEntityException ex) {
+            Logger.getLogger(Control.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     public static void eliminarOrden(Ordenes orden) throws  persistencia.exceptions.NonexistentEntityException, Vistas.exceptions.NonexistentEntityException{
